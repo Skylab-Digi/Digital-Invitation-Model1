@@ -10,7 +10,7 @@ import { DressCodeSection } from './components/DressCodeSection';
 import { Button } from './components/reusable/button';
 import { ArrowDown } from 'lucide-react';
 import { AlbumSouvenirs } from './components/AlbumSouvenirs';
-import WeddingImage from '../assets/images/wedding-bg.png';
+import WeddingImage from '../assets/images/wedding-bg.webp';
 
 function App() {
   const [showWebsite, setShowWebsite] = useState(false);

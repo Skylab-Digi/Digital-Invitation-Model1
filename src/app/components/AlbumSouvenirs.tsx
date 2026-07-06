@@ -64,6 +64,7 @@ export function AlbumSouvenirs() {
                   src={card.photo}
                   alt={card.word}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                   animate={{ y: [-card.floatOffset / 2, card.floatOffset / 2, -card.floatOffset / 2] }}
                   transition={{
                     duration: card.floatDuration,
