@@ -7,7 +7,7 @@ import { EventDetailsCards } from './components/EventDetailsCards';
 import { BridesmaidsPortal } from './components/BridesmaidsPortal';
 import { RSVPForm } from './components/RSVPForm';
 import { DressCodeSection } from './components/DressCodeSection';
-import { Button } from './components/ui/button';
+import { Button } from './components/reusable/button';
 import { ArrowDown } from 'lucide-react';
 import { AlbumSouvenirs } from './components/AlbumSouvenirs';
 

@@ -111,7 +111,7 @@ export function Timeline() {
             <div
               className="absolute top-8 bottom-8 w-px"
               style={{
-                left: 18,
+                left: 0,
                 background: "linear-gradient(to bottom, transparent, #E0C5A0 20%, #E0C5A0 80%, transparent)",
               }}
             />
