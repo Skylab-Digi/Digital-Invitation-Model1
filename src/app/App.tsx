@@ -10,6 +10,7 @@ import { DressCodeSection } from './components/DressCodeSection';
 import { Button } from './components/reusable/button';
 import { ArrowDown } from 'lucide-react';
 import { AlbumSouvenirs } from './components/AlbumSouvenirs';
+import WeddingImage from '../assets/images/wedding-bg.png';
 
 function App() {
   const [showWebsite, setShowWebsite] = useState(false);
@@ -32,7 +33,7 @@ function App() {
           <div
             className="w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage: `url('src/assets/images/wedding-bg.png')`,
+              backgroundImage: `url(${WeddingImage})`,
             }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-[#FEFDF5]" />
