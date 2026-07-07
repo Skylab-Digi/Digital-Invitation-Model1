@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Heart, Plane, Sparkles, CalendarHeart } from "lucide-react";
+import Rencontre from '../../assets/images/Rencontre.webp';
+import Mariage from '../../assets/images/Mariage.webp';
+import Voyage from '../../assets/images/Voyage.webp';
+import Proposition from '../../assets/images/Proposition.webp';
 
 const timelineData = [
   {
@@ -9,7 +13,7 @@ const timelineData = [
     year: "08/01/2020",
     description: "Notre premier regard, l'instant où tout a commencé.",
     icon: Heart,
-    photo: "https://images.unsplash.com/photo-1540076156429-35ffe82b7870?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3VwbGUlMjBmaXJzdCUyMG1lZXRpbmclMjByb21hbnRpY3xlbnwxfHx8fDE3ODI1OTk5MTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    photo: Rencontre,
   },
   {
     id: 2,
@@ -17,7 +21,7 @@ const timelineData = [
     year: "2021",
     description: "Découvrir le monde ensemble et forger des souvenirs complices.",
     icon: Plane,
-    photo: "https://images.unsplash.com/photo-1566759996874-04d713cc224a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3VwbGUlMjB0cmF2ZWxpbmclMjBhZHZlbnR1cmV8ZW58MXx8fHwxNzgyNTk5OTE2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    photo: Voyage,
   },
   {
     id: 3,
@@ -25,7 +29,7 @@ const timelineData = [
     year: "2025",
     description: "Une promesse d'éternité scellée au bord de l'eau.",
     icon: Sparkles,
-    photo: "https://images.unsplash.com/photo-1513279922550-250c2129b13a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbmdhZ2VtZW50JTIwcHJvcG9zYWwlMjByb21hbnRpY3xlbnwxfHx8fDE3ODI1OTk5MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    photo: Proposition,
   },
   {
     id: 4,
@@ -33,7 +37,7 @@ const timelineData = [
     year: "2027",
     description: "Le 27 Octobre 2027, le début d'un nouveau chapitre.",
     icon: CalendarHeart,
-    photo: "https://images.unsplash.com/photo-1576694667642-6f289dd54187?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWFjaCUyMHdlZGRpbmclMjBjZXJlbW9ueSUyMGVsZWdhbnR8ZW58MXx8fHwxNzgyNTk5OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    photo: Mariage,
   },
 ];
 

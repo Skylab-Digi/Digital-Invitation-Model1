@@ -1,23 +1,26 @@
 import { motion } from "motion/react";
+import Celebrons from '../../assets/images/Celebrons.webp';
+import Notre from '../../assets/images/Notre.webp';
+import Amour from '../../assets/images/Amour.webp';
 
 const cards = [
   {
     word: "Célébrons",
-    photo: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwY2VsZWJyYXRpb24lMjBjaGFtcGFnbmUlMjB0b2FzdHxlbnwxfHx8fDE3ODI1OTk5MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    photo: Celebrons,
     delay: 0,
     floatOffset: 6,     // px amplitude for floating
     floatDuration: 4.2, // seconds
   },
   {
     word: "notre",
-    photo: "https://images.unsplash.com/photo-1596457221755-b96bc3a6df18?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3VwbGUlMjBwb3J0cmFpdCUyMHJvbWFudGljJTIwd2VkZGluZ3xlbnwxfHx8fDE3ODI1OTk5MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    photo: Notre,
     delay: 0.15,
     floatOffset: 9,
     floatDuration: 3.7,
   },
   {
     word: "amour",
-    photo: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwZmxvd2VycyUyMGJvdXF1ZXQlMjBlbGVnYW50fGVufDF8fHx8MTc4MjU5OTkxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+    photo: Amour,
     delay: 0.3,
     floatOffset: 7,
     floatDuration: 4.8,
