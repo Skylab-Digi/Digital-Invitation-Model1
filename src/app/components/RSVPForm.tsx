@@ -1,6 +1,11 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { CheckCircle2, Mic, MicOff, Square, Play, Trash2, Plus, Minus, Users } from "lucide-react";
+import { supabase } from "../../lib/SupabaseClient"; // Ajustez selon votre chemin
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+
 
 // ─── design tokens (inline for full control) ──────────────────────
 const GOLD  = "#E0C5A0";
@@ -480,7 +485,7 @@ function SuccessScreen() {
         Votre réponse a bien été enregistrée. Nous avons hâte de partager ce moment avec vous.
       </p>
       <p style={{ fontFamily: "Great Vibes, cursive", fontSize: "1.6rem", color: GOLD, opacity: 0.7 }}>
-        Carmela & Benedict
+        Haythem & Islem
       </p>
     </motion.div>
   );
@@ -511,15 +516,115 @@ export function RSVPForm() {
     note: "",
   });
   const [voiceBlob, setVoiceBlob] = useState<Blob | null>(null);
+  const [errors, setErrors] = useState({
+  fullName: "",
+  phone: "",
+  attendance: "",
+  withCompany: ""
+});
 
-  const set = <K extends keyof typeof form>(key: K, val: (typeof form)[K]) =>
+  function setField<K extends keyof typeof form>(key: K, val: (typeof form)[K]) {
     setForm((f) => ({ ...f, [key]: val }));
+  }
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const validateField = (name: any, value: any) => {
+  let error = "";
+  
+  // Validation existante
+  if (name === "fullName" && value.length < 3) {
+    error = "Votre nom doit contenir au moins 3 caractères.";
+  }
+  if (name === "phone" && value.length > 0 && !/^[0-9+\s-]{8,}$/.test(value)) {
+    error = "Format de numéro invalide.";
+  }
+
+  setErrors(prev => ({ ...prev, [name]: error }));
+};
+
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("RSVP:", form, voiceBlob);
-    setSubmitted(true);
+
+    // Confirmation Popup
+    const MySwal = withReactContent(Swal)
+      MySwal.fire({
+      title: "Vos informations sont-elles correctes ?",
+     html: `
+        <div style="text-align: left;">
+          <p><strong>Nom:</strong> ${form.fullName}</p>
+          <p><strong>Téléphone:</strong> ${form.phone}</p>
+          <p><strong>Présence:</strong> ${form.attendance === "yes" ? "Oui" : form.attendance === "maybe" ? "Peut-être" : "Non"}</p>
+          <p><strong>Accompagnement:</strong> ${form.withCompany === "alone" ? "Seul(e)" : "En compagnie"}</p>
+          <p><strong>Nombre d'accompagnants:</strong> ${form.withCompany === "company" ? form.guestCount : 0}</p>
+        </div>
+      `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d1994a",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confimer",
+      cancelButtonText: "Annuler"
+    }).then(async (result) => {
+      if (result.isConfirmed){
+  let voiceUrl = null;
+
+    // 1. Si un message vocal existe, on l'upload d'abord
+    if (voiceBlob) {
+      const fileName = `${Date.now()}_${form.fullName.replace(/\s+/g, '_')}.webm`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('messages-vocaux') // Assurez-vous que ce bucket existe dans votre dashboard
+        .upload(fileName, voiceBlob);
+
+      if (uploadError) {
+        alert("Erreur lors de l'upload du message vocal");
+        return;
+      }
+
+      // Récupérer l'URL publique
+      const { data } = supabase.storage.from('messages-vocaux').getPublicUrl(fileName);
+      voiceUrl = data.publicUrl;
+    }
+    const nbAccompagnants = form.withCompany === "company" ? form.guestCount : 0;
+  
+    const rsvpData = {
+      nom: form.fullName,
+      telephone: form.phone,
+      presence: form.attendance === "yes" ? "Oui" : form.attendance === "maybe" ? "Peut-être" : "Non",
+      accompagnement: form.withCompany === "alone" ? "Seul(e)" : "En compagnie",
+      nb_accompagnants: nbAccompagnants,
+      note: form.note,
+      message_vocal_url: voiceUrl
+    };
+
+    // 3. Insertion dans la table RSVP
+    const { error } = await supabase
+      .from('rsvp')
+      .insert([rsvpData]);
+
+    if (error) {
+      console.error("Erreur base de données:", error);
+      alert("Une erreur est survenue lors de l'enregistrement.");
+    } else {
+      setSubmitted(true);
+    }
+      }
+    });
+        
+  
   };
+
+
+const isFormInvalid = 
+  !form.fullName || 
+  !form.attendance || 
+  !form.withCompany || 
+  !form.phone || 
+  errors.fullName !== "" || 
+  errors.phone !== "" || 
+  errors.attendance !== "" || 
+  errors.withCompany !== "";
 
   return (
     <div
@@ -582,8 +687,11 @@ export function RSVPForm() {
                 <Field label="Serez-vous avec nous ?">
                   <AttendancePicker
                     value={form.attendance}
-                    onChange={(v) => set("attendance", v)}
+                    onChange={(v) => setField("attendance", v)}
                   />
+                  {!form.attendance && (
+                    <span style={{ color: "#C08060", fontSize: "0.7rem" }}>Veuillez choisir une option de présence.</span>
+                  )}
                 </Field>
 
                 <Divider />
@@ -594,8 +702,16 @@ export function RSVPForm() {
                     required
                     placeholder="Prénom Nom"
                     value={form.fullName}
-                    onChange={(e) => set("fullName", e.target.value)}
+                    onChange={(e) => {
+                      setField("fullName", e.target.value);
+                      validateField("fullName", e.target.value);
+                    }}
                   />
+                  {errors.fullName && (
+                    <span style={{ color: "#C08060", fontSize: "0.7rem", marginTop: "4px" }}>
+                      {errors.fullName}
+                    </span>
+                  )}
                 </Field>
 
                 {/* 3 — phone */}
@@ -604,8 +720,16 @@ export function RSVPForm() {
                     type="tel"
                     placeholder="Saisissez votre numéro"
                     value={form.phone}
-                    onChange={(e) => set("phone", e.target.value)}
+                    onChange={(e) => {
+                      setField("phone", e.target.value);
+                      validateField("phone", e.target.value);
+                    }}
                   />
+                  {errors.phone && (
+                    <span style={{ color: "#C08060", fontSize: "0.7rem", marginTop: "4px" }}>
+                      {errors.phone}
+                    </span>
+                  )}
                 </Field>
 
                 <Divider />
@@ -617,7 +741,7 @@ export function RSVPForm() {
                       <button
                         key={opt}
                         type="button"
-                        onClick={() => set("withCompany", opt)}
+                        onClick={() => setField("withCompany", opt)}
                         style={{
                           flex: 1,
                           padding: "12px 10px",
@@ -641,6 +765,9 @@ export function RSVPForm() {
                       </button>
                     ))}
                   </div>
+                 {!form.withCompany && (
+                    <span style={{ color: "#C08060", fontSize: "0.7rem" }}>Veuillez choisir une option de présence.</span>
+                  )}
 
                   <AnimatePresence>
                     {form.withCompany === "company" && (
@@ -665,7 +792,7 @@ export function RSVPForm() {
                         </div>
                         <GuestCounter
                           value={form.guestCount}
-                          onChange={(n) => set("guestCount", n)}
+                          onChange={(n) => setField("guestCount", n)}
                         />
                       </motion.div>
                     )}
@@ -679,7 +806,7 @@ export function RSVPForm() {
                   <StyledTextarea
                     placeholder="Allergies, régimes alimentaires, un mot pour les mariés…"
                     value={form.note}
-                    onChange={(e) => set("note", e.target.value)}
+                    onChange={(e) => setField("note", e.target.value)}
                   />
                 </Field>
 
@@ -709,7 +836,7 @@ export function RSVPForm() {
                     opacity: form.attendance && form.fullName ? 1 : 0.55,
                     transition: "opacity 0.2s",
                   }}
-                  disabled={!form.attendance || !form.fullName}
+                  disabled={isFormInvalid}
                 >
                   Envoyer ma réponse
                 </motion.button>
