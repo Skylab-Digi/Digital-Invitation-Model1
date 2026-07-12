@@ -229,7 +229,7 @@ const COLS_DESKTOP = [
   { key: "company",  label: "Accompagnement",  w: "15%" },
   { key: "count",    label: "Acc.",            w: "6%"  },
   { key: "note",     label: "Note",            w: "26%" },
-  { key: "audio",    label: "Message vocal",   w: "10%" },
+  { key: "audio",    label: "Message vocal",   w: "30%" },
 ];
 
 const COLS_TABLET = [
@@ -382,28 +382,19 @@ function GuestTable({ rows }: { rows: GuestRow[] }) {
                   </td>
                   )}
                   {/* Audio */}
-                  <td style={{ ...tdStyle, textAlign: "center" }}>
+                <td style={{ ...tdStyle, textAlign: "center" }}>
                     {g.message_vocal_url ? (
-                      <a
-                        href={g.message_vocal_url}
-                        target="_blank"
-                        rel="noreferrer"
+                      <audio
+                        src={g.message_vocal_url}
+                        controls
                         style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 4,
-                          color: SAGE,
-                          fontFamily: "Montserrat, sans-serif",
-                          fontSize: "0.68rem",
-                          textDecoration: "none",
-                          padding: "4px 8px",
-                          border: `1px solid ${SAGE}50`,
-                          borderRadius: 20,
+                          height: 28,
+                          width: "100%",
+                          minWidth: 100,
+                          accentColor: SAGE,
+                          outline: "none",
                         }}
-                      >
-                        <Volume2 style={{ width: 11, height: 11 }} />
-                        Écouter
-                      </a>
+                      />
                     ) : (
                       <span style={{ opacity: 0.25, fontSize: "0.7rem" }}>—</span>
                     )}

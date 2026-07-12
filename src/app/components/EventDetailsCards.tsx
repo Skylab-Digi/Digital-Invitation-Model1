@@ -102,7 +102,7 @@ function MapBlock() {
       <div className="w-full overflow-hidden rounded-sm" style={{ aspectRatio: "16/9" }}>
         <iframe
           title="Lieu du mariage"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.0!2d2.3488!3d48.8534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zVmlsbGEgQXp1cmU!5e0!3m2!1sfr!2sfr!4v1680000000000"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30645.50928275458!2d10.625447109047816!3d36.52361701386528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1302a1be9eccaa39%3A0x7c067f7f80189a68!2sMaison%20Jerbi!5e0!3m2!1sfr!2stn!4v1783817503503!5m2!1sfr!2stn"
           width="100%"
           height="100%"
           style={{ border: 0, display: "block" }}
@@ -111,8 +111,9 @@ function MapBlock() {
           referrerPolicy="no-referrer-when-downgrade"
         />
       </div>
+
       <Button
-        onClick={() => window.open("https://maps.google.com", "_blank")}
+        onClick={() => window.open("https://maps.app.goo.gl/MLiyN5LVjDb26gMe8")}
         className="w-full bg-[#E0C5A0] hover:bg-[#D2B48C] text-white border-0"
         style={{ fontFamily: "Montserrat, sans-serif", fontSize: "0.72rem", letterSpacing: "0.05em" }}
       >
@@ -155,7 +156,7 @@ const cardsData: CardData[] = [
     icon: MapPin,
     title: "Lieu & Heures",
     subtitle: "Villa Azure · Bord de Mer",
-    content: "Cérémonie : 15h00\nRéception : 18h00 — Terrasse des Vagues",
+    content: "Cérémonie : 15h00\nRéception : 18h00 — Maison Jerbi",
     extra: <MapBlock />,
   },
 ];

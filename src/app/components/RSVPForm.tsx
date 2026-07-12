@@ -568,7 +568,7 @@ export function RSVPForm() {
       cancelButtonText: "Annuler"
     }).then(async (result) => {
       if (result.isConfirmed){
-  let voiceUrl = null;
+       let voiceUrl = null;
 
     // 1. Si un message vocal existe, on l'upload d'abord
     if (voiceBlob) {
@@ -586,6 +586,7 @@ export function RSVPForm() {
       const { data } = supabase.storage.from('messages-vocaux').getPublicUrl(fileName);
       voiceUrl = data.publicUrl;
     }
+
     const nbAccompagnants = form.withCompany === "company" ? form.guestCount : 0;
   
     const rsvpData = {
